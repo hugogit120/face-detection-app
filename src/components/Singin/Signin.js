@@ -6,24 +6,9 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
     const [password, setPassword] = useState("")
 
-    // const onChange = (event) => {
-    //     const theValue = event.target.value
-    //     setUser({ email: theValue, password: theValue })
-
-    //     console.log(user);
-
-    // }
-
-    const onEmailChange = (event) => {
-        setEmail(event.target.value)
-    }
-
-    const onPasswordChange = (event) => {
-        setPassword(event.target.value)
-    }
-
-    const onSubmitsignin = () => {
-        fetch("http://localhost:4000/signin", {
+    const onSubmitsignin = (event) => {
+        event.preventDefault();
+        fetch("https://heroku-face-detection-api.herokuapp.com/signin", {
             method: "post",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -37,11 +22,11 @@ const Signin = ({ onRouteChange, loadUser }) => {
                     return user
                 }
             })
+            .catch(err => {
+                console.log(err);
+            })
 
     }
-
-    // loadUser(user)
-    // onRouteChange("home")
 
     return (
         <article className="br4 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -51,11 +36,11 @@ const Signin = ({ onRouteChange, loadUser }) => {
                         <legend className="f1 fw6 ph0 mh0">Sign In</legend>
                         <div className="mt3">
                             <label className="db fw6 lh-copy f6" htmlFor="email">Email</label>
-                            <input onChange={onEmailChange} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email" id="email-address" />
+                            <input onChange={e => setEmail(e.target.value)} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email" id="email-address" />
                         </div>
                         <div className="mv3">
                             <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-                            <input onChange={onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
+                            <input onChange={e => setPassword(e.target.value)} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
                         </div>
                     </fieldset>
                     <div className="">

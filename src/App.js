@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Clarifai, { FACE_EMBED_MODEL } from "clarifai";
 import './App.css';
 import Navigation from "./components/Navigation/Navigation"
 import Logo from "./components/Logo/Logo"
@@ -9,10 +8,6 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition"
 import Signin from "./components/Singin/Signin"
 import Register from "./components/Register/Register"
 import Particles from "react-particles-js"
-
-const app = new Clarifai.App({
-  apiKey: "3b993b6bb1514ca7a5bb3d8afe72eb6a"
-})
 
 const particlesOptions = {
   particles: {
@@ -91,22 +86,24 @@ class App extends Component {
   }
 
   displayFaceBox = (box) => {
-    console.log(box);
     this.setState({ faceBox: box }) //or in ES6 you can do ({box}) if the argument and the state are called the same way
   }
 
 
   onButtonSubmit = () => {
     const { user } = this.state
-    console.log(user);
     this.setState({ imageUrl: this.state.input })
-    app.models
-      .predict(
-        Clarifai.FACE_DETECT_MODEL,
-        this.state.input)
+    fetch("https://heroku-face-detection-api.herokuapp.com/imageurl", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+      .then(response => response.json())
       .then(response => {
         if (response) {
-          fetch("http://localhost:4000/image", {
+          fetch("https://heroku-face-detection-api.herokuapp.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -115,7 +112,11 @@ class App extends Component {
           })
             .then(response => response.json()
             )
-            .then(data => this.loadUser(data))
+            .then(data => {
+              this.loadUser(data)
+              this.onRouteChange("home")
+            })
+
 
         }
         this.displayFaceBox(this.calculateFaceLocation(response))
