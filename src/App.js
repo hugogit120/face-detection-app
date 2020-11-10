@@ -8,6 +8,7 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition"
 import Signin from "./components/Singin/Signin"
 import Register from "./components/Register/Register"
 import Particles from "react-particles-js"
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 const particlesOptions = {
   particles: {
@@ -93,7 +94,7 @@ class App extends Component {
   onButtonSubmit = () => {
     const { user } = this.state
     this.setState({ imageUrl: this.state.input })
-    fetch("https://heroku-face-detection-api.herokuapp.com/imageurl", {
+    fetch(proxyurl + "https://heroku-face-detection-api.herokuapp.com/imageurl", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -103,7 +104,7 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if (response) {
-          fetch("https://heroku-face-detection-api.herokuapp.com/image", {
+          fetch(proxyurl + "https://heroku-face-detection-api.herokuapp.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

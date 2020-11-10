@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react"
-
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
 const emailRegex = RegExp(
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 );
@@ -18,7 +18,7 @@ const Register = ({ onRouteChange, loadUser }) => {
         if (!password || !name) {
             alert("fill the inputs please")
         } else {
-            fetch("https://heroku-face-detection-api.herokuapp.com/register", {
+            fetch(proxyurl + "https://heroku-face-detection-api.herokuapp.com/register", {
                 method: "post",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({ email, password, name })

@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 const Signin = ({ onRouteChange, loadUser }) => {
 
@@ -8,7 +9,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
     const onSubmitsignin = (event) => {
         event.preventDefault();
-        fetch("https://heroku-face-detection-api.herokuapp.com/signin", {
+        fetch(proxyurl + "https://heroku-face-detection-api.herokuapp.com/signin", {
             method: "post",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({ email, password })
